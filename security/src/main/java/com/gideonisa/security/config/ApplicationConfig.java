@@ -44,8 +44,11 @@ public class ApplicationConfig {
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
+        // DaoAuthenticationProvider is one of a contract type of the interface AuthenticationProvider
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        // We set where the provider should get the user's info
         authenticationProvider.setUserDetailsService(userDetailsService());
+        // We set what type of password encoding we are using
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -56,11 +59,22 @@ public class ApplicationConfig {
      * @return
      * @throws Exception
      */
+
+    /**
+     * Manages the authentications
+     * @param config
+     * @return
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return  config.getAuthenticationManager();
     }
 
+    /**
+     * Seeting the password encryption type
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

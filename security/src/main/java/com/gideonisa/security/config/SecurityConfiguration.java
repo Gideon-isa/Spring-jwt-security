@@ -32,11 +32,11 @@ public class SecurityConfiguration {
             .permitAll()
             .anyRequest()
             .authenticated())
-        .sessionManagement((sessionManagement) -> sessionManagement
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
+        .sessionManagement((s) -> s
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvier)
                 .addFilterBefore(jwtAutheFilter, UsernamePasswordAuthenticationFilter.class);
+
         
         return http.build();
 

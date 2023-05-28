@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             
             // the authorization always starts with the keyword BEARER
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                // passing the request to the next filter
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -57,11 +58,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                UserDetails userDetails = this.userDetailService.loadUserByUsername(userEmail);
 
                if (jwtService.isTokenValid(jwt, userDetails)) {
+                   // if the user is valid, we create a UsernamePasswordAuthenticationToken variable to store the
+                   // user into it.
                 // This object "authtoken" is needed by spring to update the security context
                 UsernamePasswordAuthenticationToken authtoken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                         userDetails,
+                        null,
+                        userDetails.getAuthorities());
 
-                    // adding more details to the spring context "authtoken"
+                    // we enforce the authtoken with the request to the spring context
                     authtoken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                     );
@@ -73,7 +78,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                
             }
 
-            // We need to pass the it to the next filter
+            // We need always to pass the it to the next filter
+            // This passes it to the next filter
             filterChain.doFilter(request, response);
 
 
