@@ -24,19 +24,42 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return repository
-                .findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-                // TODO Auto-generated method stub
-                //throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
-            }
-
+        return username -> {
+            return repository
+            .findByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException(username));
+            // TODO Auto-generated method stub
+            //throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
         };
     }
+
+
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new UserDetailsService() {
+//            @Override
+//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//                return repository
+//                        .findByEmail(username)
+//                        .orElseThrow(() -> new UsernameNotFoundException(username));
+//                // TODO Auto-generated method stub
+//                //throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
+//            }
+//
+//        };
+//    }
+
+    /**
+     * Manages the authentications
+     * @param config
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return  config.getAuthenticationManager();
+    }
+
 
     /**
      *
@@ -50,26 +73,14 @@ public class ApplicationConfig {
         authenticationProvider.setUserDetailsService(userDetailsService());
         // We set what type of password encoding we are using
         authenticationProvider.setPasswordEncoder(passwordEncoder());
+
+
+        System.out.println();
+
         return authenticationProvider;
     }
 
-    /**
-     *
-     * @param config
-     * @return
-     * @throws Exception
-     */
 
-    /**
-     * Manages the authentications
-     * @param config
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return  config.getAuthenticationManager();
-    }
 
     /**
      * Seeting the password encryption type

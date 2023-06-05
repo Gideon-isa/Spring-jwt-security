@@ -47,6 +47,10 @@ public class User implements UserDetails{
    @Enumerated(EnumType.STRING)
    private Role role;
 
+   /**
+    * Returns a list of ROLES assigned to the User
+    * @return
+    */
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
       // TODO Auto-generated method stub
@@ -73,8 +77,9 @@ public class User implements UserDetails{
 
    @Override
    public boolean isAccountNonLocked() {
+      return true;
       // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
+      //throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
    }
 
    @Override
@@ -90,7 +95,14 @@ public class User implements UserDetails{
       // TODO Auto-generated method stub
       //throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
 
-      return false;
+      return true;
+   }
+
+   @Override
+   public String getPassword() {
+      // TODO Auto-generated method stub
+      return password;
+      //throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
    }
 
 
